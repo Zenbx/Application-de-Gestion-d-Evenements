@@ -1,0 +1,21 @@
+{
+  "CONF_2025_001" : {
+    "id" : "CONF_2025_001",
+    "nom" : "Conférence Tech Innovation 2025",
+    "date" : "2025-06-25T09:04:07.8343296",
+    "lieu" : "Centre de Conférences de Paris",
+    "capaciteMax" : 150,
+    "participants" : [ {
+      "id" : "PART_001",
+      "nom" : "Alice Dubois",
+      "email" : "alice.dubois@email.com"
+    }, {
+      "id" : "PART_005",
+      "nom" : "Emma Bernard",
+      "email" : "emma.bernard@email.com"
+    } ],
+    "observers" : [ ],
+    "theme" : "Intelligence Artificielle et Futur",
+    "intervenants" : [ ]
+  }
+}

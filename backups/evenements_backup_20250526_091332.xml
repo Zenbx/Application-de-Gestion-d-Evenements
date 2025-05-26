@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<evenements count="1" exportDate="2025-05-26T09:13:31.9631838">
+  <evenement id="CONF_2025_001" type="conference">
+    <nom>Conférence Tech Innovation 2025</nom>
+    <date>2025-06-25T09:13:31.8558719</date>
+    <lieu>Centre de Conférences de Paris</lieu>
+    <capaciteMax>150</capaciteMax>
+    <participants count="1">
+      <participant id="PART_002">
+        <nom>Bob Martin</nom>
+        <email>bob.martin@email.com</email>
+      </participant>
+    </participants>
+    <theme>Intelligence Artificielle et Futur</theme>
+  </evenement>
+</evenements>

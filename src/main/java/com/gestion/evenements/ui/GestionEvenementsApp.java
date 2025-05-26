@@ -94,6 +94,8 @@ public class GestionEvenementsApp extends Application {
     private void initializeServices() {
         // Initialiser le synchronisateur de données
         dataSynchronizer = DataSynchronizer.getInstance();
+
+        dataSynchronizer.loadAllData();
         
         // Créer un observer global pour l'interface
         globalUIObserver = new UIObserver(() -> {

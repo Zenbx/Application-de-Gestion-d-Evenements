@@ -1,0 +1,17 @@
+{
+  "CONF_2025_001" : {
+    "id" : "CONF_2025_001",
+    "nom" : "Conférence Tech Innovation 2025",
+    "date" : "2025-06-25T09:13:31.8558719",
+    "lieu" : "Centre de Conférences de Paris",
+    "capaciteMax" : 150,
+    "participants" : [ {
+      "id" : "PART_002",
+      "nom" : "Bob Martin",
+      "email" : "bob.martin@email.com"
+    } ],
+    "observers" : [ ],
+    "theme" : "Intelligence Artificielle et Futur",
+    "intervenants" : [ ]
+  }
+}

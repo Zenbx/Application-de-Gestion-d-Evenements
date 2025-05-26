@@ -38,7 +38,8 @@ public class RegisterView extends Application {
     private TextField organisationField;
     private HBox organisationContainer;
     private TextField telephoneField;
-    private CheckBox acceptTermsCheckBox;
+    private HBox acceptTermsCheckBox;
+    private CheckBox checkBox;
     private Label statusLabel;
     private Button registerButton;
     private Button loginLinkButton;
@@ -66,7 +67,7 @@ public class RegisterView extends Application {
 
         //namePolice = font.getFamily();
 
-        Scene scene = new Scene(scrollPane, 480, 720);
+        Scene scene = new Scene(scrollPane, 880, 720);
         scene.setFill(Color.web("#f8f9fa"));
         scene.getStylesheets().add(getClass().getResource("/com/gestion/evenements/ui/styles/modernStyle.css").toExternalForm());
 
@@ -94,7 +95,7 @@ public class RegisterView extends Application {
         // Carte principale
         formContainer = new VBox();
         formContainer.setAlignment(Pos.CENTER);
-        formContainer.setMaxWidth(400);
+        formContainer.setMaxWidth(800);
         formContainer.setSpacing(0);
         formContainer.setPadding(new Insets(48, 40, 36, 40));
         formContainer.setStyle(
@@ -351,14 +352,23 @@ public class RegisterView extends Application {
         comboBox.setMaxWidth(Double.MAX_VALUE);
     }
     
-    private CheckBox createModernCheckBox() {
-        CheckBox checkBox = new CheckBox();
+    private HBox createModernCheckBox() {
+        checkBox = new CheckBox();
+          checkBox.setStyle(
+            "-fx-font-family: 'Roboto', sans-serif;" +
+            "-fx-font-size: 14px;" +
+            "-fx-text-fill: #1a73e8;" +
+            "-fx-background-color: transparent;" +
+            "-fx-border-color: #000000;" +
+            "-fx-cursor: hand;"
+        );
+
         
         // Créer le texte avec lien
-        Label termsText = new Label("J'accepte les ");
+        Label termsText = new Label(" J'accepte les ");
         termsText.setStyle("-fx-font-family: 'Roboto', sans-serif; -fx-font-size: 14px; -fx-text-fill: #5f6368;");
         
-        Button termsLink = new Button("conditions d'utilisation");
+        Label termsLink = new Label("conditions d'utilisation");
         termsLink.setStyle(
             "-fx-font-family: 'Roboto', sans-serif;" +
             "-fx-font-size: 14px;" +
@@ -368,12 +378,12 @@ public class RegisterView extends Application {
             "-fx-underline: true;" +
             "-fx-cursor: hand;"
         );
-        termsLink.setOnAction(e -> showTermsDialog());
+        termsLink.setOnMouseClicked(e -> showTermsDialog());
         
         Label andText = new Label(" et la ");
         andText.setStyle("-fx-font-family: 'Roboto', sans-serif; -fx-font-size: 14px; -fx-text-fill: #5f6368;");
         
-        Button privacyLink = new Button("politique de confidentialité");
+        Label privacyLink = new Label("politique de confidentialité");
         privacyLink.setStyle(
             "-fx-font-family: 'Roboto', sans-serif;" +
             "-fx-font-size: 14px;" +
@@ -383,13 +393,13 @@ public class RegisterView extends Application {
             "-fx-underline: true;" +
             "-fx-cursor: hand;"
         );
-        privacyLink.setOnAction(e -> showPrivacyDialog());
+        privacyLink.setOnMouseClicked(e -> showPrivacyDialog());
         
         HBox termsBox = new HBox(0);
         termsBox.setAlignment(Pos.CENTER_LEFT);
         termsBox.getChildren().addAll(checkBox, termsText, termsLink, andText, privacyLink);
         
-        return checkBox;
+        return termsBox;
     }
     
     private VBox createPasswordStrengthIndicator() {
@@ -679,7 +689,7 @@ public class RegisterView extends Application {
         }
         
         // Validation de l'acceptation des conditions
-        if (!acceptTermsCheckBox.isSelected()) {
+        if (!checkBox.isSelected()) {
             errors.append("• Vous devez accepter les conditions d'utilisation\n");
         }
         

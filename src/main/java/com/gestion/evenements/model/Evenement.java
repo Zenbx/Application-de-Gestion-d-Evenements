@@ -6,15 +6,9 @@ import com.gestion.evenements.exception.*;
 import com.gestion.evenements.model.evenementparticulier.Conference;
 import com.gestion.evenements.model.evenementparticulier.Concert;
 
-
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.*;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -28,6 +22,7 @@ public abstract class Evenement implements EvenementObservable {
     protected String lieu;
     protected int capaciteMax;
     protected List<Participant> participants;
+    @JsonIgnore
     public List<ParticipantObserver> observers;
 
     public Evenement() {
@@ -72,6 +67,10 @@ public abstract class Evenement implements EvenementObservable {
         observers.remove(observer);
     }
 
+    public List<ParticipantObserver> getObservers() {
+        return new ArrayList<>(observers);
+    }
+
     @Override
     public void notifierObservateurs(String message) {
         for (ParticipantObserver observer : observers) {
@@ -93,4 +92,3 @@ public abstract class Evenement implements EvenementObservable {
     public List<Participant> getParticipants() { return participants; }
     public void setParticipants(List<Participant> participants) { this.participants = participants; }
 }
-

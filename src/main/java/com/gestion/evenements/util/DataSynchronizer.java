@@ -1,6 +1,7 @@
 package com.gestion.evenements.util;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ import com.gestion.evenements.serialization.SerializationManager;
 /**
  * Gestionnaire central de synchronisation des données avec sérialisation automatique
  * Utilise le pattern Singleton et Observer pour maintenir la cohérence des données
- * Intègre la sauvegarde automatique en JSON et XML
+ * Intègre la sauvegarde automatique en JSON uniquement
  */
 public class DataSynchronizer {
     private static DataSynchronizer instance;
@@ -38,7 +39,6 @@ public class DataSynchronizer {
     
     // Configuration de sauvegarde
     private static final String EVENTS_JSON_FILE = "evenements.json";
-    private static final String EVENTS_XML_FILE = "evenements.xml";
     private static final String USERS_JSON_FILE = "users.json";
     private static final String BACKUP_DIR = "backups";
     
@@ -57,7 +57,6 @@ public class DataSynchronizer {
         this.gestionEvenements = GestionEvenements.getInstance();
         this.authService = AuthenticationService.getInstance();
         this.currentStats = new SystemStats();
-
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
         
         // Charger les données existantes
@@ -72,7 +71,7 @@ public class DataSynchronizer {
         // Mettre à jour les statistiques
         updateSystemStats();
         
-        System.out.println("✅ DataSynchronizer initialisé avec sérialisation automatique");
+        System.out.println("✅ DataSynchronizer initialisé avec sérialisation JSON automatique");
     }
     
     public static DataSynchronizer getInstance() {
@@ -97,7 +96,6 @@ public class DataSynchronizer {
         if (evenement == null) return;
         
         try {
-
             // Vérifier si l'événement existe déjà
             if (gestionEvenements.getEvenements().containsKey(evenement.getId())) {
                 throw new EvenementDejaExistantException("Un événement avec l'ID " + evenement.getId() + " existe déjà");
@@ -114,11 +112,9 @@ public class DataSynchronizer {
             notifierObserveursGlobaux("Nouvel événement ajouté: " + evenement.getNom());
             
             // Sauvegarder automatiquement
-            /*if (autoSaveEnabled) {
+            if (autoSaveEnabled) {
                 saveEventsAsync();
-            }*/
-
-            saveAllDataNow();
+            }
             
             // Mettre à jour les statistiques
             updateSystemStats();
@@ -127,6 +123,7 @@ public class DataSynchronizer {
             
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de l'ajout de l'événement: " + e.getMessage());
+            e.printStackTrace();
             notifierObserveursGlobaux("Erreur lors de l'ajout de l'événement: " + e.getMessage());
         }
     }
@@ -152,11 +149,9 @@ public class DataSynchronizer {
                 notifierObserveursGlobaux("Événement supprimé: " + nomEvenement);
                 
                 // Sauvegarder automatiquement
-                /*if (autoSaveEnabled) {
+                if (autoSaveEnabled) {
                     saveEventsAsync();
-                }*/
-
-                saveAllDataNow();
+                }
                 
                 // Mettre à jour les statistiques
                 updateSystemStats();
@@ -166,6 +161,7 @@ public class DataSynchronizer {
             
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de la suppression de l'événement: " + e.getMessage());
+            e.printStackTrace();
             notifierObserveursGlobaux("Erreur lors de la suppression: " + e.getMessage());
         }
     }
@@ -194,11 +190,9 @@ public class DataSynchronizer {
                 notifierObserveursGlobaux("Événement modifié: " + evenement.getNom());
                 
                 // Sauvegarder automatiquement
-                /*if (autoSaveEnabled) {
+                if (autoSaveEnabled) {
                     saveEventsAsync();
-                }*/
-
-                saveAllDataNow();
+                }
                 
                 // Mettre à jour les statistiques
                 updateSystemStats();
@@ -208,51 +202,43 @@ public class DataSynchronizer {
             
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de la mise à jour de l'événement: " + e.getMessage());
+            e.printStackTrace();
             notifierObserveursGlobaux("Erreur lors de la mise à jour: " + e.getMessage());
         }
     }
-
-      /**
+    
+    /**
      * Sauvegarde immédiate et synchrone des données
      */
     public void saveAllDataNow() {
         try {
-            System.out.println("💾 Sauvegarde immédiate des données...");
+            System.out.println("💾 Sauvegarde immédiate des données JSON...");
             
-            // Sauvegarder les événements en JSON et XML
+            // Sauvegarder les événements en JSON
             Map<String, Evenement> evenements = gestionEvenements.getEvenements();
             
             // Créer les répertoires si nécessaire
             java.io.File jsonFile = new java.io.File(EVENTS_JSON_FILE);
-            java.io.File xmlFile = new java.io.File(EVENTS_XML_FILE);
-            
             if (jsonFile.getParentFile() != null) {
                 jsonFile.getParentFile().mkdirs();
-            }
-            if (xmlFile.getParentFile() != null) {
-                xmlFile.getParentFile().mkdirs();
             }
             
             // Sauvegarder en JSON
             SerializationManager.sauvegarderEvenementsJSON(evenements, EVENTS_JSON_FILE);
             System.out.println("✅ Fichier JSON créé: " + EVENTS_JSON_FILE);
             
-            // Sauvegarder en XML
-            SerializationManager.sauvegarderEvenementsXML(evenements, EVENTS_XML_FILE);
-            System.out.println("✅ Fichier XML créé: " + EVENTS_XML_FILE);
-            
             lastSaveTime = LocalDateTime.now();
             
             System.out.println("✅ " + evenements.size() + " événements sauvegardés immédiatement");
             
         } catch (Exception e) {
-            System.err.println("❌ Erreur lors de la sauvegarde immédiate: " + e.getMessage());
+            System.err.println("❌ Erreur lors de la sauvegarde JSON immédiate: " + e.getMessage());
             e.printStackTrace();
-            notifierObserveursGlobaux("Erreur lors de la sauvegarde: " + e.getMessage());
+            notifierObserveursGlobaux("Erreur lors de la sauvegarde JSON: " + e.getMessage());
         }
     }
-
-       public GestionEvenements getGestionEvenements() {
+    
+    public GestionEvenements getGestionEvenements() {
         return gestionEvenements;
     }
     
@@ -292,6 +278,7 @@ public class DataSynchronizer {
                 observer.notifier(message);
             } catch (Exception e) {
                 System.err.println("⚠️ Erreur lors de la notification d'un observer: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -301,23 +288,14 @@ public class DataSynchronizer {
     // ================================
     
     /**
-     * Charge toutes les données depuis les fichiers
+     * Charge toutes les données depuis le fichier JSON
      */
     public void loadAllData() {
         try {
-            System.out.println("🔄 Chargement des données...");
+            System.out.println("🔄 Chargement des données JSON...");
             
             // Charger les événements depuis JSON
             Map<String, Evenement> evenements = SerializationManager.chargerEvenementsJSON(EVENTS_JSON_FILE);
-            
-            // Si le fichier JSON n'existe pas, essayer XML
-            if (evenements.isEmpty()) {
-                try {
-                    evenements = SerializationManager.chargerEvenementsXML(EVENTS_XML_FILE);
-                } catch (Exception e) {
-                    System.out.println("⚠️ Aucun fichier XML trouvé: " + e.getMessage());
-                }
-            }
             
             // Charger dans la gestion centrale
             for (Map.Entry<String, Evenement> entry : evenements.entrySet()) {
@@ -332,10 +310,11 @@ public class DataSynchronizer {
             lastLoadTime = LocalDateTime.now();
             updateSystemStats();
             
-            System.out.println("✅ " + evenements.size() + " événements chargés");
+            System.out.println("✅ " + evenements.size() + " événements chargés depuis JSON");
             
         } catch (Exception e) {
-            System.err.println("❌ Erreur lors du chargement des données: " + e.getMessage());
+            System.err.println("❌ Erreur lors du chargement des données JSON: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -351,7 +330,15 @@ public class DataSynchronizer {
      */
     private void saveEventsAsync() {
         if (scheduledExecutor != null && !scheduledExecutor.isShutdown()) {
-            scheduledExecutor.execute(this::saveAllData);
+            scheduledExecutor.execute(() -> {
+                try {
+                    saveAllData();
+                } catch (Exception e) {
+                    System.err.println("❌ Erreur lors de la sauvegarde JSON asynchrone: " + e.getMessage());
+                    e.printStackTrace();
+                    notifierObserveursGlobaux("Erreur lors de la sauvegarde JSON asynchrone: " + e.getMessage());
+                }
+            });
         }
     }
     
@@ -360,12 +347,12 @@ public class DataSynchronizer {
      */
     public void exportCompleteBackup() {
         try {
-            String timestamp = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             
             // Export des événements
-            SerializationManager.exporterEvenements(
+            SerializationManager.sauvegarderEvenementsJSON(
                 gestionEvenements.getEvenements(), 
-                "evenements_backup_" + timestamp
+                BACKUP_DIR + "/evenements_backup_" + timestamp + ".json"
             );
             
             // Export des utilisateurs
@@ -373,14 +360,18 @@ public class DataSynchronizer {
             for (User user : authService.getAllUsers()) {
                 users.put(user.getEmail(), user);
             }
-            SerializationManager.exporterUtilisateurs(users, "utilisateurs_backup_" + timestamp);
+            SerializationManager.sauvegarderUtilisateursJSON(
+                users, 
+                BACKUP_DIR + "/utilisateurs_backup_" + timestamp + ".json"
+            );
             
-            notifierObserveursGlobaux("Sauvegarde complète créée: " + timestamp);
-            System.out.println("✅ Sauvegarde complète créée avec timestamp: " + timestamp);
+            notifierObserveursGlobaux("Sauvegarde complète JSON créée: " + timestamp);
+            System.out.println("✅ Sauvegarde complète JSON créée avec timestamp: " + timestamp);
             
         } catch (Exception e) {
-            System.err.println("❌ Erreur lors de l'export complet: " + e.getMessage());
-            notifierObserveursGlobaux("Erreur lors de la sauvegarde complète: " + e.getMessage());
+            System.err.println("❌ Erreur lors de l'export JSON complet: " + e.getMessage());
+            e.printStackTrace();
+            notifierObserveursGlobaux("Erreur lors de la sauvegarde JSON complète: " + e.getMessage());
         }
     }
     
@@ -389,9 +380,7 @@ public class DataSynchronizer {
     // ================================
     
     private void startAutoSave() {
-        if (autoSaveEnabled && scheduledExecutor == null) {
-            //scheduledExecutor = Executors.newScheduledThreadPool(2);
-            
+        if (autoSaveEnabled && !scheduledExecutor.isShutdown()) {
             // Sauvegarde automatique périodique
             scheduledExecutor.scheduleAtFixedRate(
                 this::saveAllData,
@@ -408,17 +397,15 @@ public class DataSynchronizer {
                 TimeUnit.HOURS
             );
             
-            System.out.println("✅ Sauvegarde automatique activée (toutes les " + autoSaveIntervalMinutes + " minutes)");
+            System.out.println("✅ Sauvegarde JSON automatique activée (toutes les " + autoSaveIntervalMinutes + " minutes)");
         }
     }
     
     public void stopAutoSave() {
         if (scheduledExecutor != null && !scheduledExecutor.isShutdown()) {
-
-            //Sauvegarder une derniere fois 
-
+            // Sauvegarder une dernière fois
             saveAllDataNow();
-
+            
             scheduledExecutor.shutdown();
             try {
                 if (!scheduledExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
@@ -428,7 +415,7 @@ public class DataSynchronizer {
                 scheduledExecutor.shutdownNow();
                 Thread.currentThread().interrupt();
             }
-            System.out.println("✅ Sauvegarde automatique arrêtée");
+            System.out.println("✅ Sauvegarde JSON automatique arrêtée");
         }
     }
     
@@ -447,7 +434,7 @@ public class DataSynchronizer {
             gestionEvenements.getEvenements().clear();
             
             // Créer de nouveaux événements de démonstration
-            initializeDemoDataIfNeeded();
+            //initializeDemoDataIfNeeded();
             
             // Sauvegarder immédiatement
             saveAllData();
@@ -457,6 +444,7 @@ public class DataSynchronizer {
             
         } catch (Exception e) {
             System.err.println("❌ Erreur lors du rechargement des données de démonstration: " + e.getMessage());
+            e.printStackTrace();
             notifierObserveursGlobaux("Erreur lors du rechargement: " + e.getMessage());
         }
     }
@@ -471,7 +459,7 @@ public class DataSynchronizer {
                     "CONF_2025_001",
                     "Conférence Tech Innovation 2025",
                     LocalDateTime.now().plusDays(30),
-                    "Centre de Conférences de Paris",
+                    "Centre de Conférences de Melen",
                     150,
                     "Intelligence Artificielle et Futur"
                 );
@@ -480,7 +468,7 @@ public class DataSynchronizer {
                     "CONC_2025_001",
                     "Festival Jazz Spring",
                     LocalDateTime.now().plusDays(45),
-                    "Olympia, Paris",
+                    "Olympia, Fandena",
                     800,
                     "Marcus Miller Trio",
                     "Jazz Fusion"
@@ -499,7 +487,7 @@ public class DataSynchronizer {
                     "CONC_2025_002",
                     "Soirée Rock Classique",
                     LocalDateTime.now().plusDays(60),
-                    "Zénith de Paris",
+                    "Palais des Congrès",
                     5000,
                     "The Legacy Band",
                     "Rock Classique"
@@ -551,6 +539,7 @@ public class DataSynchronizer {
                 
             } catch (Exception e) {
                 System.err.println("❌ Erreur lors de l'initialisation des données de démonstration: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -584,6 +573,7 @@ public class DataSynchronizer {
             
         } catch (Exception e) {
             System.err.println("⚠️ Erreur lors de la mise à jour des statistiques: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -605,7 +595,7 @@ public class DataSynchronizer {
             startAutoSave();
         }
         
-        System.out.println("✅ Intervalle de sauvegarde automatique mis à jour: " + minutes + " minutes");
+        System.out.println("✅ Intervalle de sauvegarde JSON automatique mis à jour: " + minutes + " minutes");
     }
     
     public void setAutoSaveEnabled(boolean enabled) {
@@ -617,7 +607,7 @@ public class DataSynchronizer {
             stopAutoSave();
         }
         
-        System.out.println("✅ Sauvegarde automatique " + (enabled ? "activée" : "désactivée"));
+        System.out.println("✅ Sauvegarde JSON automatique " + (enabled ? "activée" : "désactivée"));
     }
     
     // ================================
@@ -638,29 +628,26 @@ public class DataSynchronizer {
         
         System.out.println("✅ DataSynchronizer arrêté proprement");
     }
-
+    
     public void cleanup() {
-    try {
-        System.out.println("🛑 Nettoyage du DataSynchronizer...");
-        
-        // Nettoyer les observers
-        if (globalObservers != null) {
-            globalObservers.clear();
-        }
-        
-        // Sauvegarder une dernière fois si nécessaire
         try {
-            //saveSimpleBackup();
+            System.out.println("🛑 Nettoyage du DataSynchronizer...");
+            
+            // Nettoyer les observers
+            if (globalObservers != null) {
+                globalObservers.clear();
+            }
+            
+            // Sauvegarder une dernière fois si nécessaire
+            saveAllData();
+            
+            System.out.println("✅ DataSynchronizer nettoyé");
+            
         } catch (Exception e) {
-            System.err.println("⚠️ Erreur lors de la sauvegarde finale: " + e.getMessage());
+            System.err.println("❌ Erreur lors du nettoyage: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        System.out.println("✅ DataSynchronizer nettoyé");
-        
-    } catch (Exception e) {
-        System.err.println("❌ Erreur lors du nettoyage: " + e.getMessage());
     }
-}
     
     // ================================
     // CLASSE INTERNE POUR LES STATISTIQUES
