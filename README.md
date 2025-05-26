@@ -1,5 +1,4 @@
-Pour l'instant l'application fait pratiquement tout ce qui est demandé, mais quelques erreurs sont encore à déplorer mais seront gérés 
-
+Pour l'instant l'application fait pratiquement tout ce qui est demandé, mais quelques erreurs sont encore à déplorer mais seront gérés , On été géré, pour la **Version Finale** , veuillez aller dans la branche **backFront**
 
 # 📅 Application de Gestion d'Événements JavaFX
 
