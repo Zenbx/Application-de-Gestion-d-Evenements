@@ -48,9 +48,10 @@ Dans la première version du code, il était possible de compiler chaque interfa
 ### AuthenticationService
 - Service d'authentification
 
-###Les Controllers pour les interfaces EvenementController, OrganisateurController et ParticipantController
+### Les Controllers pour les interfacesEvenementController, OrganisateurController et ParticipantController
+- Ce sont les controllers pour les interfaces pour les lier avec les classes du package **model**
 
-###Les Classes Exceptions CapaciteMaxiAtteinteException, EvenementDejaExistantException, ParticipantNonTrouveException
+### Les Classes Exceptions CapaciteMaxiAtteinteException, EvenementDejaExistantException, ParticipantNonTrouveException
 - Des exceptions personnalisés pour des besoins spécifiques
 
 ### SerializationManager 
