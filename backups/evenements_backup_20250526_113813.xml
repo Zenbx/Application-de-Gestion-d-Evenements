@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<evenements count="1" exportDate="2025-05-26T11:38:12.6085755">
+  <evenement id="CONF_2025_001" type="conference">
+    <nom>Conférence Tech Innovation 2025</nom>
+    <date>2025-06-25T11:38:12.4652172</date>
+    <lieu>Centre de Conférences de Melen</lieu>
+    <capaciteMax>150</capaciteMax>
+    <participants count="4">
+      <participant id="PART_001">
+        <nom>Alice Dubois</nom>
+        <email>alice.dubois@email.com</email>
+      </participant>
+      <participant id="PART_002">
+        <nom>Bob Martin</nom>
+        <email>bob.martin@email.com</email>
+      </participant>
+      <participant id="PART_003">
+        <nom>Claire Petit</nom>
+        <email>claire.petit@email.com</email>
+      </participant>
+      <participant id="PART_005">
+        <nom>Emma Bernard</nom>
+        <email>emma.bernard@email.com</email>
+      </participant>
+    </participants>
+    <theme>Intelligence Artificielle et Futur</theme>
+  </evenement>
+</evenements>

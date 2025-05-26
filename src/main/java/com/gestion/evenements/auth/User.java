@@ -5,8 +5,19 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.gestion.evenements.auth.UserRole;
+import com.gestion.evenements.model.Organisateur;
+import com.gestion.evenements.model.Participant;
+
+
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Participant.class, name = "participant"),
+    @JsonSubTypes.Type(value = Organisateur.class, name = "organisateur")
+})
 
 /**
  * Modèle d'utilisateur pour l'authentification et la gestion des comptes

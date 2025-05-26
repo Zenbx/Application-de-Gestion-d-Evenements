@@ -1,0 +1,17 @@
+{
+  "CONF_2025_001" : {
+    "id" : "CONF_2025_001",
+    "nom" : "Conférence Tech Innovation 2025",
+    "date" : "2025-06-25T13:17:37.7947898",
+    "lieu" : "Centre de Conférences de Melen",
+    "capaciteMax" : 150,
+    "participants" : [ {
+      "id" : "PART_005",
+      "nom" : "Emma Bernard",
+      "email" : "emma.bernard@email.com"
+    } ],
+    "observers" : [ ],
+    "theme" : "Intelligence Artificielle et Futur",
+    "intervenants" : [ ]
+  }
+}

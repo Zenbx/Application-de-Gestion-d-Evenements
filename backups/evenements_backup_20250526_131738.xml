@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<evenements count="1" exportDate="2025-05-26T13:17:37.9114753">
+  <evenement id="CONF_2025_001" type="conference">
+    <nom>Conférence Tech Innovation 2025</nom>
+    <date>2025-06-25T13:17:37.7947898</date>
+    <lieu>Centre de Conférences de Melen</lieu>
+    <capaciteMax>150</capaciteMax>
+    <participants count="1">
+      <participant id="PART_005">
+        <nom>Emma Bernard</nom>
+        <email>emma.bernard@email.com</email>
+      </participant>
+    </participants>
+    <theme>Intelligence Artificielle et Futur</theme>
+  </evenement>
+</evenements>
