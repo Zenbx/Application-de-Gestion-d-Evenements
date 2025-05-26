@@ -1,0 +1,21 @@
+{
+  "CONC_2025_002" : {
+    "id" : "CONC_2025_002",
+    "nom" : "Soirée Rock Classique",
+    "date" : "2025-07-25T00:16:05.291252",
+    "lieu" : "Zénith de Paris",
+    "capaciteMax" : 5000,
+    "participants" : [ {
+      "id" : "PART_002",
+      "nom" : "Bob Martin",
+      "email" : "bob.martin@email.com"
+    }, {
+      "id" : "PART_003",
+      "nom" : "Claire Petit",
+      "email" : "claire.petit@email.com"
+    }, {
+      "id" : "PART_004",
+      "nom" : "David Moreau",
+      "email" : "david.moreau@email.com"
+    } ],
+    "observers" : [
