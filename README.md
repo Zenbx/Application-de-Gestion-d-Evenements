@@ -57,8 +57,11 @@ Dans la première version du code, il était possible de compiler chaque interfa
 ### SerializationManager 
 - Il s'agit de la classe qui gère tout ce qui est sérialization et déserialization
 
-###Les Observers EvenementObservable, ParticipantObserver, et UIObserver
-- Ce sont respectivement les observers pour les évènements , les participants et pour les interfaces 
+### Les Observers EvenementObservable, ParticipantObserver, et UIObserver
+- Ce sont respectivement les observers pour les évènements , les participants et pour les interfaces
+
+### DataSynchronizer
+- C'est la classe qui gère toute la synchrinisation dans l'application
 ---
 
 ## 💻 Technologies utilisées
@@ -80,6 +83,15 @@ Dans cette application, Nous devons donc gérer des évenements dans cette appli
 Pour une bonne visualition des choses j'ai mis des Evènments et Participant par défaut qui s'affichent quelque soit l'utilisateur.
 
 Chaque évènement lors de sa création est enregistré dans un fichier au format **JSON** et un autre au format **XML** ce qui permet la pesistance de ceux ci, j'en ai fais de même avec les utilisateurs 
+
+
+
+
+Dans cette application, j'ai ajouté assez de fonctionnalités comme des rapports pour les organisateurs d'évènements mais certaines focntionnalités sont encore à implémenter et j'ai mis un message dans l"application lorsque un utilisatuer veut les utiliser, on lui fait comprendre qu'elle doivent être implémenter , certaines interfaces aussi ne sont pas encore au point, mais nétant pa sle bu réelle de l'application je n'ai jugéé nécéssaire de m'attarder 
+
+Dans le projet, Vous constaterez , dans le packge **ui** 3 packages **factories**, **managers** et **controllers** , ceux ci contiennent des classes qui sont censés gérer plusieurs choses, comme les animations graphiques, les Notifications graphiques, les Dialogs, les Ex^portation de rapports , et faire certaines gestion, mais celle ci ne sont pas encore utiliser dans les classes pour les interfaces , ceux pourquoi le code source de celles-ci est assez long
+
+Dans un futur proche, j'aimerais mettre sur pied une sorte de Template pour les interfaces en utilisant mon fichier CSS modernStyle.css et ces autres classes pour faciliter de futures projets , comme je l'ai fait ici , étant donné que ce CSS est un fichier que j'améliore de puis un certain temps déjà, même chose pour les autres classes d'interfaces   
 
 
 ---
