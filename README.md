@@ -67,10 +67,12 @@ Dans la première version du code, il était possible de compiler chaque interfa
 ## 💻 Technologies utilisées
 
 - **Java 11+**
-- **JavaFX** (Scène, StackPane, Alert, Timeline…)
+- **JavaFX** : pour les interfaces graphique
 - **CSS personnalisé** : Material Design
 - **Maven** ou exécution manuelle
-- Design Pattern Observer
+- **Design Pattern Observer**
+- **JUnit** : pour les tests unitaires
+- **FasterXML.Jackson** : pour la gestion des JSON et XML
 
 ---
 
@@ -91,7 +93,10 @@ Dans cette application, j'ai ajouté assez de fonctionnalités comme des rapport
 
 Dans le projet, Vous constaterez , dans le packge **ui** 3 packages **factories**, **managers** et **controllers** , ceux ci contiennent des classes qui sont censés gérer plusieurs choses, comme les animations graphiques, les Notifications graphiques, les Dialogs, les Ex^portation de rapports , et faire certaines gestion, mais celle ci ne sont pas encore utiliser dans les classes pour les interfaces , ceux pourquoi le code source de celles-ci est assez long
 
-Dans un futur proche, j'aimerais mettre sur pied une sorte de Template pour les interfaces en utilisant mon fichier CSS modernStyle.css et ces autres classes pour faciliter de futures projets , comme je l'ai fait ici , étant donné que ce CSS est un fichier que j'améliore de puis un certain temps déjà, même chose pour les autres classes d'interfaces   
+Dans un futur proche, j'aimerais mettre sur pied une sorte de Template pour les interfaces en utilisant mon fichier CSS modernStyle.css et ces autres classes pour faciliter de futures projets , comme je l'ai fait ici , étant donné que ce CSS est un fichier que j'améliore de puis un certain temps déjà, même chose pour les autres classes d'interface
+
+
+Dans ce code, nous avons toute une batterie de tests unitaires pour tester certaines fonctionnalités de notre de code , tout ceci dans le package **test** de notre projet 
 
 
 ---
