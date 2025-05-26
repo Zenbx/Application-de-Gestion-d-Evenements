@@ -19,6 +19,8 @@ import com.gestion.evenements.serialization.SerializationManager;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;          
@@ -301,6 +303,55 @@ public class SystemeGestionEvenementsTest {
         
         assertSame(instance1, instance2);
     }
+
+
+    @Test
+@Order(17)
+@DisplayName("Test scénario complet inscription/désinscription")
+void testScenarioCompletInscriptionDesinscription() throws Exception {
+    // 1. Créer un organisateur
+    Organisateur organisateur = new Organisateur("ORG001", "Jean Organisateur", "jean@org.com");
+    
+    // 2. Créer des événements
+    Conference grandeConference = new Conference("CONF002", "Grande Conférence", 
+        LocalDateTime.now().plusDays(30), "Grand Centre", 100, "Grande Thématique");
+    
+    organisateur.organiserEvenement(grandeConference);
+    gestion.ajouterEvenement(grandeConference);
+    
+    // 3. Créer plusieurs participants
+    List<Participant> participants = new ArrayList<>();
+    for (int i = 1; i <= 10; i++) {
+        participants.add(new Participant("P" + i, "Participant " + i, "p" + i + "@test.com"));
+    }
+    
+    // 4. Inscrire tous les participants
+    for (Participant p : participants) {
+        grandeConference.ajouterParticipant(p);
+    }
+    
+    assertEquals(10, grandeConference.getParticipants().size());
+    
+    // 5. Désinscrire la moitié
+    for (int i = 0; i < 5; i++) {
+        grandeConference.retirerParticipant(participants.get(i));
+    }
+    
+    assertEquals(5, grandeConference.getParticipants().size());
+    
+    // 6. Test sérialisation de l'état final
+    File tempFile = File.createTempFile("integration_test", ".json");
+    SerializationManager.sauvegarderEvenementsJSON(gestion.getEvenements(), tempFile.getPath());
+    
+    // 7. Test désérialisation
+    Map<String, Evenement> evenementsCharges = SerializationManager.chargerEvenementsJSON(tempFile.getPath());
+    Evenement confChargee = evenementsCharges.get("CONF002");
+    
+    assertEquals(5, confChargee.getParticipants().size());
+    
+    // Nettoyage
+    tempFile.delete();
+}
 
     // ======================== CLASSE D'AIDE POUR LES TESTS ========================
 

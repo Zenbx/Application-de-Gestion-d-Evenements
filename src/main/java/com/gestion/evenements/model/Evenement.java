@@ -23,7 +23,7 @@ public abstract class Evenement implements EvenementObservable {
     protected int capaciteMax;
     protected List<Participant> participants;
     @JsonIgnore
-    protected List<ParticipantObserver> observers;
+    public List<ParticipantObserver> observers;
 
     public Evenement() {
         this.participants = new ArrayList<>();
@@ -65,6 +65,10 @@ public abstract class Evenement implements EvenementObservable {
     @Override
     public void retirerObservateur(ParticipantObserver observer) {
         observers.remove(observer);
+    }
+
+    public List<ParticipantObserver> getObservers() {
+        return new ArrayList<>(observers);
     }
 
     @Override

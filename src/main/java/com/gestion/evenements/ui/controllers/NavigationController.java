@@ -6,6 +6,7 @@ import com.gestion.evenements.ui.managers.ViewManager;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -25,6 +26,7 @@ public class NavigationController {
     private final AnimationManager animationManager;
     private Button selectedButton;
     private ScrollPane contentScrollPane;
+    private String currentView = "dashboard";
     
     public NavigationController(ViewManager viewManager, AnimationManager animationManager) {
         this.viewManager = viewManager;
