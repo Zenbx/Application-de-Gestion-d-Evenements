@@ -1,3 +1,6 @@
+Auteur : BELEKOTAN II JEFF NICHOSS Matricule : 24P765 Etudiant de l'Ecole Nationale Supérieure Polytechnique de Yaoundé
+
+
 Pour l'instant l'application fait pratiquement tout ce qui est demandé, mais quelques erreurs sont encore à déplorer mais seront gérés , On été géré, pour la **Version Finale** , veuillez aller dans la branche **backFront**
 
 # 📅 Application de Gestion d'Événements JavaFX
